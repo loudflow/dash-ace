@@ -20,10 +20,10 @@ highlightActiveLine=NULL, keyboardHandler=NULL,
 markers=NULL, maxLines=NULL, minLines=NULL, mode=NULL,
 orientation=NULL, placeholder=NULL, prefixLine=NULL,
 readOnly=NULL, setOptions=NULL, showGutter=NULL,
-showPrintMargin=NULL, style=NULL, syntaxFolds=NULL,
-syntaxKeywords=NULL, tabSize=NULL, theme=NULL,
-triggerCaseInsensitive=NULL, triggerWords=NULL, value=NULL,
-width=NULL, wrapEnabled=NULL)
+showLineNumbers=NULL, showPrintMargin=NULL, style=NULL,
+syntaxFolds=NULL, syntaxKeywords=NULL, tabSize=NULL,
+theme=NULL, triggerCaseInsensitive=NULL, triggerWords=NULL,
+value=NULL, width=NULL, wrapEnabled=NULL)
 }
 
 \arguments{
@@ -78,6 +78,8 @@ width=NULL, wrapEnabled=NULL)
 \item{setOptions}{Named list. Options to apply directly to the Ace editor instance}
 
 \item{showGutter}{Logical. Show gutter}
+
+\item{showLineNumbers}{Logical. show line numbers}
 
 \item{showPrintMargin}{Logical. Show print margin}
 

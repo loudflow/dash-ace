@@ -430,6 +430,17 @@
           "computed": false
         }
       },
+      "showLineNumbers": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "show line numbers",
+        "defaultValue": {
+          "value": "true",
+          "computed": false
+        }
+      },
       "setProps": {
         "type": {
           "name": "func"

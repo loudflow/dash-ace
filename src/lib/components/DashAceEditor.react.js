@@ -9,6 +9,7 @@ import 'ace-builds/src-min-noconflict/ext-spellcheck';
 
 import "ace-builds/src-min-noconflict/mode-python";
 import "ace-builds/src-min-noconflict/mode-sql";
+import "ace-builds/src-min-noconflict/mode-toml";
 import "ace-builds/src-min-noconflict/theme-github";
 import "ace-builds/src-min-noconflict/theme-monokai";
 import "ace-builds/src-min-noconflict/theme-tomorrow";
@@ -32,7 +33,10 @@ export default class DashAceEditor extends Component {
     customize(editor) {
         const {autocompleter, prefixLine, triggerWords, triggerCaseInsensitive, syntaxKeywords, syntaxFolds} = this.props;
 
-        if (this.props.mode !== 'python' && this.props.mode !== 'javascript' && this.props.mode !== 'sql') {
+        if (
+            this.props.mode !== 'python' && this.props.mode !== 'javascript' && this.props.mode !== 'sql'
+            && this.props.mode !== 'toml'
+        ) {
             editor.getSession().setMode(new CustomMode(syntaxKeywords, syntaxFolds));
         }
 
@@ -78,7 +82,7 @@ export default class DashAceEditor extends Component {
             highlightActiveLine, cursorStart, wrapEnabled, readOnly, minLines, maxLines, width, height,
             enableBasicAutocompletion, enableLiveAutocompletion, enableSnippets, tabSize, debounceChangePeriod,
             editorProps, setOptions, keyboardHandler, commands, annotations, markers, style, orientation,
-            setProps} = this.props;
+            showLineNumbers, setProps} = this.props;
 
         const fontAdjust = [
             {
@@ -97,7 +101,7 @@ export default class DashAceEditor extends Component {
             return (
                 <DiffEditor
                     ref="aceEditor"
-                    mode={(mode !== 'python' && mode !== 'javascript' && mode !== 'sql')? 'python': mode}
+                    mode={(mode !== 'python' && mode !== 'javascript' && mode !== 'sql' && mode !== 'toml')? 'toml': mode}
                     theme={theme}
                     value={value}
                     className={classnames('container__editor', className)}
@@ -124,6 +128,7 @@ export default class DashAceEditor extends Component {
                     editorProps={editorProps}
                     setOptions={setOptions}
                     style={style}
+                    showLineNumbers={showLineNumbers}
                 />
             );
         }
@@ -134,7 +139,7 @@ export default class DashAceEditor extends Component {
                 mode={(mode !== 'python' && mode !== 'javascript' && mode !== 'sql')? 'python': mode}
                 theme={theme}
                 value={value}
-				        className={classnames('container__editor', className)}
+                className={classnames('container__editor', className)}
                 onChange={code => setProps({ value: code })}
                 onLoad={editor => this.customize(editor)}
                 name={id}
@@ -163,6 +168,7 @@ export default class DashAceEditor extends Component {
                 annotations={annotations}
                 markers={markers}
                 style={style}
+                showLineNumbers={showLineNumbers}
             />
         );
     }
@@ -200,7 +206,8 @@ DashAceEditor.defaultProps = {
     width: '1000px',
     height: '1000px',
     orientation: 'below',
-    editorProps: { $blockScrolling: true }
+    editorProps: { $blockScrolling: true },
+    showLineNumbers: true,
 };
 
 DashAceEditor.propTypes = {
@@ -388,6 +395,11 @@ DashAceEditor.propTypes = {
      * orientation of the diff editor, 'beside' or 'below'
      */
     orientation: PropTypes.string,
+
+    /**
+     * show line numbers
+     */
+    showLineNumbers: PropTypes.bool,
 
     /**
      * Dash-assigned callback that should be called to report property changes

@@ -14,26 +14,36 @@ app = dash.Dash(__name__,
                 routes_pathname_prefix='/dash/'
                 )
 
-syntaxKeywords = {
-    "variable.language": "this|that|super|self|sub|",
-    "support.function": "enumerate|range|pow|sum|abs|max|min|argmax|argmin|len|mean|std|median|all|any|",
-    "support.type": "String|Integer|Bool|Float|Image|UUID|Time|DateTime|Type|",
-    "storage.modifier": "parameter|atomic|primary|optional|id|time|asc|desc|",
-    "constant.language": "true|false|none|na|",
-    "keyword.operator": "and|or|not|except|unless|imply|in|",
-    "keyword.control": "as|from|to|import|export|return|for|exist|with|"
-}
-
-syntaxFolds = "\\:="
-
 ace_editor = dash_ace.DashAceEditor(
         id='demo-editor',
-        value='test(a: Integer) -> String := \n    return f"value is {a}"',
+        value="""
+# This is a TOML document
+
+title = "TOML Example"
+
+[owner]
+name = "Tom Preston-Werner"
+dob = 1979-05-27T07:32:00-08:00
+
+[database]
+enabled = true
+ports = [ 8000, 8001, 8002 ]
+data = [ ["delta", "phi"], [3.14] ]
+temp_targets = { cpu = 79.5, case = 72.0 }
+
+[servers]
+
+[servers.alpha]
+ip = "10.0.0.1"
+role = "frontend"
+
+[servers.beta]
+ip = "10.0.0.2"
+role = "backend"        
+            """,
         theme='github',
-        mode='norm',
+        mode='toml',
         tabSize=2,
-        syntaxKeywords=syntaxKeywords,
-        syntaxFolds=syntaxFolds,
         enableBasicAutocompletion=True,
         enableLiveAutocompletion=True,
         autocompleter='/autocompleter?prefix=',
@@ -43,25 +53,17 @@ ace_editor = dash_ace.DashAceEditor(
     )
 
 app.layout = html.Div([
-    html.Button('Compare', id='diff-btn'),
     ace_editor,
     html.Div(id='output')
 ])
 
 
 @app.callback(
-    [Output(component_id='demo-editor', component_property='value'),
-     Output(component_id='diff-btn', component_property='children')],
-    [Input('diff-btn', 'n_clicks')]
+    Output('output', 'children'),
+    Input('demo-editor', 'value')
 )
-def update_output_editor(n_clicks):
-    if n_clicks is None:
-        n_clicks = 0
-    if n_clicks % 2 == 0:
-        return ['test(a: Integer) -> String := \n    return f"value is {a}"',
-                'test(a: Integer) -> String := return f"value is {a}"'], 'Single'
-    else:
-        return 'test(a: Integer) -> String := \n    return f"value is {a}"', 'Compare'
+def update_output_editor(value):
+    return value
 
 
 @server.route('/autocompleter', methods=['GET'])

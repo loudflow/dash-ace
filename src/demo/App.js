@@ -9,7 +9,7 @@ class App extends Component {
         super(props);
         this.state = {
             value: ['# test this example', '# test that example'],
-            mode: 'python',
+            mode: 'toml',
             theme: 'github',
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,
